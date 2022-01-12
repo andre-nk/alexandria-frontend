@@ -36,8 +36,6 @@ export const AuthContextProvider = ({ children }) => {
     });
   }, []);
 
-  console.log(state.user.photoURL);
-
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>
       {children}

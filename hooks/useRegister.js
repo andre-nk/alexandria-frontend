@@ -13,7 +13,7 @@ export const useRegister = () => {
   const register = (name, profilePicture, email, password) => {
     setError(null);
     createUserWithEmailAndPassword(projectAuth, email, password)
-      .then((res) => {
+      .then(async (res) => {
         try {
           const profilePictureRef = ref(
             projectStorage,
@@ -42,11 +42,36 @@ export const useRegister = () => {
             });
 
             //CALL NATIVE API
-
-            dispatch({
-              type: "LOGIN",
-              payload: res.user,
+            const response = await fetch("http://localhost:8080/api/v1/users", {
+              method: "POST",
+              body: JSON.stringify({
+                uid: res.user.uid,
+                role: "",
+                location: "",
+                friends: [],
+              }),
             });
+
+            if (response.ok) {
+              const responseData = response.json();
+
+              const user = {
+                uid: res.user.uid,
+                email: res.user.email,
+                displayName: res.user.displayName,
+                provider: res.user.providerId,
+                photoURL: res.user.photoURL,
+                isVerified: res.user.emailVerified,
+                role: responseData.data.role,
+                location: responseData.data.location,
+                friends: responseData.data.friends
+              };
+
+              dispatch({
+                type: "LOGIN",
+                payload: user,
+              });
+            }
           }
         } catch (err) {
           setError(err.message);
