@@ -10,7 +10,7 @@ export const useRegister = () => {
   const [profilePictureURL, setProfilePictureURL] = useState(null);
   const { dispatch } = useAuthContext();
 
-  const register = (name, profilePicture, email, password) => {
+  const register = async (name, profilePicture, email, password) => {
     setError(null);
     createUserWithEmailAndPassword(projectAuth, email, password)
       .then(async (res) => {
@@ -24,7 +24,6 @@ export const useRegister = () => {
             .then(() => {
               getDownloadURL(profilePictureRef)
                 .then((url) => {
-                  console.log(url);
                   setProfilePictureURL(url);
                 })
                 .catch((err) => {
@@ -34,6 +33,8 @@ export const useRegister = () => {
             .catch((err) => {
               setError(err.message);
             });
+
+          console.log(profilePictureURL);
 
           if (profilePictureURL) {
             updateProfile(res.user, {
@@ -53,7 +54,7 @@ export const useRegister = () => {
             });
 
             if (response.ok) {
-              const responseData = response.json();
+              const responseData = await response.json();
 
               const user = {
                 uid: res.user.uid,
@@ -64,7 +65,7 @@ export const useRegister = () => {
                 isVerified: res.user.emailVerified,
                 role: responseData.data.role,
                 location: responseData.data.location,
-                friends: responseData.data.friends
+                friends: responseData.data.friends,
               };
 
               dispatch({

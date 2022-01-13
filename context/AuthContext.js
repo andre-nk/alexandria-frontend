@@ -28,13 +28,42 @@ export const AuthContextProvider = ({ children }) => {
   });
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(projectAuth, (user) => {
+    const unsubscribe = onAuthStateChanged(projectAuth, async (user) => {
       //CALL NATIVE API AND FORM A DESIRED USER STRUCT THEN PASS IT AS A PAYLOAD
+      var userInstance;
 
-      dispatch({ type: "AUTH_IS_READY", payload: user });
+      if (user != null) {
+        const response = await fetch(
+          `http://localhost:8080/api/v1/users/${user.uid}`,
+          {
+            method: "GET",
+          }
+        );
+        if (response.ok) {
+          const responseData = await response.json();
+
+          userInstance = {
+            uid: user.uid,
+            email: user.email,
+            displayName: user.displayName,
+            provider: user.providerId,
+            photoURL: user.photoURL,
+            isVerified: user.emailVerified,
+            role: responseData.data.role,
+            location: responseData.data.location,
+            friends: responseData.data.friends,
+          };
+
+          dispatch({ type: "AUTH_IS_READY", payload: userInstance });
+        } else {
+          dispatch({ type: "AUTH_IS_READY", payload: user });
+        }
+      }
       unsubscribe();
     });
   }, []);
+
+  console.log(state.user);
 
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>

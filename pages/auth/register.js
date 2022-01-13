@@ -125,8 +125,8 @@ export default function Register() {
             password: "",
           }}
           validationSchema={SignupSchema}
-          onSubmit={(values) => {
-            register(values.name, profilePicture, values.email, values.password);
+          onSubmit={async (values) => {
+            await register(values.name, profilePicture, values.email, values.password);
           }}
         >
           {({ errors, touched }) => {
