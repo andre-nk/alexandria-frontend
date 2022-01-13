@@ -33,32 +33,36 @@ export const AuthContextProvider = ({ children }) => {
       var userInstance;
 
       if (user != null) {
-        const response = await fetch(
-          `http://localhost:8080/api/v1/users/${user.uid}`,
-          {
-            method: "GET",
+        try {
+          const response = await fetch(
+            `http://localhost:8080/api/v1/users/${user.uid}`,
+            {
+              method: "GET",
+            }
+          );
+
+          if (response.ok) {
+            const responseData = await response.json();
+
+            userInstance = {
+              uid: user.uid,
+              email: user.email,
+              displayName: user.displayName,
+              provider: user.providerId,
+              photoURL: user.photoURL,
+              isVerified: user.emailVerified,
+              role: responseData.data.role,
+              location: responseData.data.location,
+              friends: responseData.data.friends,
+            };
+
+            dispatch({ type: "AUTH_IS_READY", payload: userInstance });
           }
-        );
-        if (response.ok) {
-          const responseData = await response.json();
-
-          userInstance = {
-            uid: user.uid,
-            email: user.email,
-            displayName: user.displayName,
-            provider: user.providerId,
-            photoURL: user.photoURL,
-            isVerified: user.emailVerified,
-            role: responseData.data.role,
-            location: responseData.data.location,
-            friends: responseData.data.friends,
-          };
-
-          dispatch({ type: "AUTH_IS_READY", payload: userInstance });
-        } else {
+        } catch (error) {
           dispatch({ type: "AUTH_IS_READY", payload: user });
         }
       }
+
       unsubscribe();
     });
   }, []);

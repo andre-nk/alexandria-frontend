@@ -9,7 +9,7 @@ import { IoImageOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
-import { useRegister } from "../../hooks/useRegister";
+import { useAuth } from "../../hooks/useAuth";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -23,12 +23,12 @@ const SignupSchema = Yup.object().shape({
     .required("Password field is required"),
 });
 
-export default function Register() {
+export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
   const [profilePictureUrl, setProfilePictureUrl] = useState(null);
   const [isValidImage, setIsValidImage] = useState(false);
-  const { error, register } = useRegister();
+  const { error, registerWithEmail, registerWithGithub, registerWithGoogle } = useAuth();
 
   //profile picture methods
   useEffect(() => {
@@ -126,7 +126,12 @@ export default function Register() {
           }}
           validationSchema={SignupSchema}
           onSubmit={async (values) => {
-            await register(values.name, profilePicture, values.email, values.password);
+            await registerWithEmail(
+              values.name,
+              profilePicture,
+              values.email,
+              values.password
+            );
           }}
         >
           {({ errors, touched }) => {
@@ -215,13 +220,16 @@ export default function Register() {
           - or -
         </p>
         <div className="flex">
-          <button className="bg-primary-white text-major-text hover:bg-primary-border border border-primary-border rounded-md text-medium flex align-center justify-center flex-1 px-4 py-3 duration-200 mb-6 mr-1.5">
+          <button
+            onClick={registerWithGithub}
+            className="bg-primary-white text-major-text hover:bg-primary-border border border-primary-border rounded-md text-medium flex align-center justify-center flex-1 px-4 py-3 duration-200 mb-6 mr-1.5"
+          >
             <FaGithub size={20} className="self-center"></FaGithub>
             <p className="pl-2 self-center">Github</p>
           </button>
           <button
+            onClick={registerWithGoogle}
             className="bg-primary-white text-major-text hover:bg-primary-border border border-primary-border rounded-md text-medium flex align-center justify-center flex-1 px-4 py-3 duration-200 mb-6 ml-1.5"
-            onClick={(e) => {}}
           >
             <FcGoogle size={20} className="self-center"></FcGoogle>
             <p className="pl-2 self-center">Google</p>

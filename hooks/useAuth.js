@@ -1,0 +1,137 @@
+import { useState } from "react";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  updateProfile,
+  signInWithPopup,
+  GithubAuthProvider,
+  GoogleAuthProvider,
+} from "firebase/auth";
+import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
+
+import { projectAuth, projectStorage } from "../firebase/config";
+import { useAuthContext } from "./useAuthContext";
+
+export const useAuth = () => {
+  const [error, setError] = useState(null);
+  const [profilePictureURL, setProfilePictureURL] = useState(null);
+  const { dispatch } = useAuthContext();
+
+  const registerUserAPI = async (user) => {
+    //CALL NATIVE API
+    const response = await fetch("http://localhost:8080/api/v1/users", {
+      method: "POST",
+      body: JSON.stringify({
+        uid: user.uid,
+        role: "",
+        location: "",
+        friends: [],
+      }),
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+
+      const userInstance = {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        provider: user.providerId,
+        photoURL: user.photoURL,
+        isVerified: user.emailVerified,
+        role: responseData.data.role,
+        location: responseData.data.location,
+        friends: responseData.data.friends,
+      };
+
+      dispatch({
+        type: "LOGIN",
+        payload: userInstance,
+      });
+    }
+  };
+
+  const registerWithEmail = async (name, profilePicture, email, password) => {
+    setError(null);
+    createUserWithEmailAndPassword(projectAuth, email, password)
+      .then(async (res) => {
+        try {
+          const profilePictureRef = ref(
+            projectStorage,
+            `profilePicture/${res.user.uid}.jpg`
+          );
+
+          uploadBytes(profilePictureRef, profilePicture)
+            .then(() => {
+              getDownloadURL(profilePictureRef)
+                .then((url) => {
+                  setProfilePictureURL(url);
+                })
+                .catch((err) => {
+                  setError(err.message);
+                });
+            })
+            .catch((err) => {
+              setError(err.message);
+            });
+
+          if (profilePictureURL) {
+            updateProfile(res.user, {
+              displayName: name,
+              photoURL: profilePictureURL,
+            });
+
+            await registerUserAPI(res.user);
+          }
+        } catch (err) {
+          setError(err.message);
+        }
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  };
+
+  const signInWithEmail = async (email, password) => {
+    setError(null);
+    signInWithEmailAndPassword(projectAuth, email, password)
+      .then(async (res) => {
+        try {
+          console.log(res.user);
+          // await registerUserAPI(res.user);
+        } catch (err) {
+          setError(err.message);
+        }
+      })
+      .catch((err) => {
+        setError(err.message);
+      });
+  };
+
+  const registerWithGithub = async () => {
+    setError(null);
+    signInWithPopup(projectAuth, new GithubAuthProvider())
+      .then(async (res) => {
+        const credential = GithubAuthProvider.credentialFromResult(result);
+        // await registerUserAPI(res.user)
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  };
+
+  const registerWithGoogle = async () => {
+    setError(null);
+    signInWithPopup(projectAuth, new GoogleAuthProvider())
+      .then(async (res) => {
+        // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+        const credential = GoogleAuthProvider.credentialFromResult(result);
+        // await registerUserAPI(res.user)
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  };
+
+  return { error, registerWithEmail, signInWithEmail, registerWithGithub, registerWithGoogle };
+};
