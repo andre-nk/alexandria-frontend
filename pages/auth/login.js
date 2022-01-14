@@ -21,7 +21,7 @@ const SignupSchema = Yup.object().shape({
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const { error, signInWithEmail } = useAuth();
+  const { error, signInWithEmail, registerWithGithub, registerWithGoogle } = useAuth();
   const { formatAuthError } = useFormatError();
 
   return (
@@ -45,9 +45,9 @@ export default function LoginPage() {
             <span>
               Log in to{" "}
               <strong className="font-medium text-primary-black">
-                Alexandria {" "}
+                Alexandria{" "}
               </strong>
-              and 
+              and
             </span>
             <br />
             continue your notetaking voyage!
@@ -124,9 +124,7 @@ export default function LoginPage() {
                 </button>
                 {error && (
                   <p className="mt-2 ml-1.5 text-xs text-red-500 opacity-70 normal-case">
-                    *{
-                        formatAuthError(error)
-                    }
+                    *{formatAuthError(error)}
                   </p>
                 )}
               </Form>
@@ -137,11 +135,17 @@ export default function LoginPage() {
           - or -
         </p>
         <div className="flex">
-          <button className="bg-primary-white text-major-text hover:bg-primary-border border border-primary-border rounded-md text-medium flex align-center justify-center flex-1 px-4 py-3 duration-200 mb-6 mr-1.5">
+          <button
+            onClick={registerWithGithub}
+            className="bg-primary-white text-major-text hover:bg-primary-border border border-primary-border rounded-md text-medium flex align-center justify-center flex-1 px-4 py-3 duration-200 mb-6 mr-1.5"
+          >
             <FaGithub size={20} className="self-center"></FaGithub>
             <p className="pl-2 self-center">Github</p>
           </button>
-          <button className="bg-primary-white text-major-text hover:bg-primary-border border border-primary-border rounded-md text-medium flex align-center justify-center flex-1 px-4 py-3 duration-200 mb-6 ml-1.5">
+          <button
+            onClick={registerWithGoogle}
+            className="bg-primary-white text-major-text hover:bg-primary-border border border-primary-border rounded-md text-medium flex align-center justify-center flex-1 px-4 py-3 duration-200 mb-6 ml-1.5"
+          >
             <FcGoogle size={20} className="self-center"></FcGoogle>
             <p className="pl-2 self-center">Google</p>
           </button>

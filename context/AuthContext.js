@@ -30,8 +30,6 @@ export const AuthContextProvider = ({ children }) => {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(projectAuth, async (user) => {
       //CALL NATIVE API AND FORM A DESIRED USER STRUCT THEN PASS IT AS A PAYLOAD
-      var userInstance;
-
       if (user != null) {
         try {
           const response = await fetch(
@@ -44,7 +42,7 @@ export const AuthContextProvider = ({ children }) => {
           if (response.ok) {
             const responseData = await response.json();
 
-            userInstance = {
+            const userInstance = {
               uid: user.uid,
               email: user.email,
               displayName: user.displayName,
