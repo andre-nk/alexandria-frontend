@@ -2,14 +2,16 @@ import * as Yup from "yup";
 import Link from "next/link";
 import Head from "next/head";
 import Image from "next/image";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
+import { useRouter } from "next/router";
 import { Formik, Field, Form } from "formik";
 import { IoImageOutline } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 import { useAuth } from "../../hooks/useAuth";
+import { useFormatError } from "../../hooks/useFormatError";
+import { useAuthContext } from "../../hooks/useAuthContext";
+import SocialAuthComponent from "../../components/socialAuth";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -29,6 +31,13 @@ export default function RegisterPage() {
   const [profilePictureUrl, setProfilePictureUrl] = useState(null);
   const [isValidImage, setIsValidImage] = useState(false);
   const { error, registerWithEmail, registerWithGithub, registerWithGoogle } = useAuth();
+  const { formatAuthError } = useFormatError();
+  const router = useRouter();
+  const { user } = useAuthContext();
+
+  if (user !== null) {
+    router.push("/");
+  }
 
   //profile picture methods
   useEffect(() => {
@@ -110,8 +119,8 @@ export default function RegisterPage() {
             <span>
               Create your{" "}
               <strong className="font-medium text-primary-black">
-                Alexandria
-              </strong>{" "}
+                Alexandria{" "}
+              </strong>
               account
             </span>
             <br />
@@ -208,33 +217,18 @@ export default function RegisterPage() {
                   Create your account
                 </button>
                 {error && (
-                  <p className="mt-2 ml-1.5 text-xs text-red-500 opacity-70">
-                    *{error}
+                  <p className="mt-2 ml-1.5 text-xs text-red-500 opacity-70 normal-case">
+                    *{formatAuthError(error)}
                   </p>
                 )}
               </Form>
             );
           }}
         </Formik>
-        <p className="text-minor-text self-center text-sm my-4 font-light duration-200">
-          - or -
-        </p>
-        <div className="flex">
-          <button
-            onClick={registerWithGithub}
-            className="bg-primary-white text-major-text hover:bg-primary-border border border-primary-border rounded-md text-medium flex align-center justify-center flex-1 px-4 py-3 duration-200 mb-6 mr-1.5"
-          >
-            <FaGithub size={20} className="self-center"></FaGithub>
-            <p className="pl-2 self-center">Github</p>
-          </button>
-          <button
-            onClick={registerWithGoogle}
-            className="bg-primary-white text-major-text hover:bg-primary-border border border-primary-border rounded-md text-medium flex align-center justify-center flex-1 px-4 py-3 duration-200 mb-6 ml-1.5"
-          >
-            <FcGoogle size={20} className="self-center"></FcGoogle>
-            <p className="pl-2 self-center">Google</p>
-          </button>
-        </div>
+        <SocialAuthComponent
+          github={registerWithGithub}
+          google={registerWithGoogle}
+        />
         <span className="text-minor-text hover:text-major-text text-md self-center font-light duration-200 flex cursor-pointer">
           <p>Already have an account?</p>
           <Link href="/auth/login">

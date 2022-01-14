@@ -2,13 +2,15 @@ import * as Yup from "yup";
 import Link from "next/link";
 import Head from "next/head";
 import Image from "next/image";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
+import { useRouter } from "next/router";
 import { Formik, Field, Form } from "formik";
 import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+
 import { useAuth } from "../../hooks/useAuth";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import { useFormatError } from "../../hooks/useFormatError";
+import SocialAuthComponent from "../../components/socialAuth";
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string()
@@ -23,6 +25,12 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const { error, signInWithEmail, registerWithGithub, registerWithGoogle } = useAuth();
   const { formatAuthError } = useFormatError();
+  const router = useRouter();
+  const { user } = useAuthContext();
+
+  if (user !== null) {
+    router.push("/");
+  }
 
   return (
     <div className="min-w-full min-h-screen flex justify-center align-center p-8">
@@ -127,35 +135,30 @@ export default function LoginPage() {
                     *{formatAuthError(error)}
                   </p>
                 )}
+                <span className="text-minor-text text-sm self-end mt-3 font-light duration-200 flex cursor-pointer group">
+                  <p>Forgot your password?</p>
+                  <Link href="/auth/forgot">
+                    <span className="underline pl-1 hover:text-primary-blue duration-200">
+                      Reset it here!
+                    </span>
+                  </Link>
+                </span>
               </Form>
             );
           }}
         </Formik>
-        <p className="text-minor-text self-center text-sm my-4 font-light duration-200">
-          - or -
-        </p>
-        <div className="flex">
-          <button
-            onClick={registerWithGithub}
-            className="bg-primary-white text-major-text hover:bg-primary-border border border-primary-border rounded-md text-medium flex align-center justify-center flex-1 px-4 py-3 duration-200 mb-6 mr-1.5"
-          >
-            <FaGithub size={20} className="self-center"></FaGithub>
-            <p className="pl-2 self-center">Github</p>
-          </button>
-          <button
-            onClick={registerWithGoogle}
-            className="bg-primary-white text-major-text hover:bg-primary-border border border-primary-border rounded-md text-medium flex align-center justify-center flex-1 px-4 py-3 duration-200 mb-6 ml-1.5"
-          >
-            <FcGoogle size={20} className="self-center"></FcGoogle>
-            <p className="pl-2 self-center">Google</p>
-          </button>
+        <div className="mt-2 flex flex-col justify-center">
+          <SocialAuthComponent
+            github={registerWithGithub}
+            google={registerWithGoogle}
+          />
+          <span className="text-minor-text hover:text-major-text text-md self-center font-light duration-200 flex cursor-pointer">
+            <p>Doesn't have an account?</p>
+            <Link href="/auth/register">
+              <span className="underline pl-1">Register!</span>
+            </Link>
+          </span>
         </div>
-        <span className="text-minor-text hover:text-major-text text-md self-center font-light duration-200 flex cursor-pointer">
-          <p>Doesn't have an account?</p>
-          <Link href="/auth/register">
-            <span className="underline pl-1">Register!</span>
-          </Link>
-        </span>
       </div>
     </div>
   );

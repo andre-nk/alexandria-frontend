@@ -2,6 +2,7 @@ import { useState } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  sendPasswordResetEmail,
   updateProfile,
   signInWithPopup,
   GithubAuthProvider,
@@ -15,6 +16,7 @@ import { useAuthContext } from "./useAuthContext";
 export const useAuth = () => {
   const [error, setError] = useState(null);
   const [profilePictureURL, setProfilePictureURL] = useState(null);
+  const [isResetSent, setisResetSent] = useState(false)
   const { dispatch } = useAuthContext();
 
   const registerUserAPI = async (user) => {
@@ -53,7 +55,8 @@ export const useAuth = () => {
 
   const loginUserAPI = async (user) => {
     //CALL NATIVE API
-    const response = await fetch(`http://localhost:8080/api/v1/users/${user.uid}`,
+    const response = await fetch(
+      `http://localhost:8080/api/v1/users/${user.uid}`,
       {
         method: "GET",
       }
@@ -122,6 +125,17 @@ export const useAuth = () => {
       });
   };
 
+  const resetPassword = async (email) => {
+    setError(null)
+    sendPasswordResetEmail(projectAuth, email)
+      .then(() => {
+        setisResetSent(true)
+      })
+      .catch((error) => {
+        setError(error.message)
+      });
+  };
+
   const signInWithEmail = async (email, password) => {
     setError(null);
     signInWithEmailAndPassword(projectAuth, email, password)
@@ -142,7 +156,7 @@ export const useAuth = () => {
     signInWithPopup(projectAuth, new GithubAuthProvider())
       .then(async (res) => {
         GithubAuthProvider.credentialFromResult(res);
-        await registerUserAPI(res.user)
+        await registerUserAPI(res.user);
       })
       .catch((error) => {
         setError(error.message);
@@ -154,7 +168,7 @@ export const useAuth = () => {
     signInWithPopup(projectAuth, new GoogleAuthProvider())
       .then(async (res) => {
         GoogleAuthProvider.credentialFromResult(res);
-        await registerUserAPI(res.user)
+        await registerUserAPI(res.user);
       })
       .catch((error) => {
         setError(error.message);
@@ -163,8 +177,10 @@ export const useAuth = () => {
 
   return {
     error,
+    isResetSent,
     registerWithEmail,
     signInWithEmail,
+    resetPassword,
     registerWithGithub,
     registerWithGoogle,
   };
