@@ -32,7 +32,7 @@ export default function ForgotPasswordPage() {
         <title>Alexandria - Reset Password</title>
       </Head>
       <Image src="/ornament.svg" layout="fill" className="z-0 object-cover" />
-      <div className="flex flex-col align-center self-center shadow-2xl rounded-2xl bg-primary-white z-10 py-12 px-12">
+      <div className="flex flex-col align-center self-center shadow-2xl max-w-sm rounded-2xl bg-primary-white z-10 py-12 px-12">
         <div className="flex flex-col justify-center items-center space-y-4 pb-6">
           <div className="self-center flex w-full justify-center items-center space-x-2">
             <Image
