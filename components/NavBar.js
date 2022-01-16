@@ -6,13 +6,14 @@ import { VscTerminalLinux } from "react-icons/vsc";
 import { BsWindows, BsApple } from "react-icons/bs";
 import {
   IoAddOutline,
-  IoNotificationsOutline,
   IoLogoAndroid,
   IoMenuOutline
 } from "react-icons/io5";
 
 import { useAuthContext } from "../hooks/useAuthContext";
 import NavLink from "./NavLink";
+import AccountMenu from "./AccountMenu";
+import ActivityMenu from "./ActivityMenu";
 
 export default function Navbar() {
   const { user } = useAuthContext();
@@ -109,16 +110,12 @@ export default function Navbar() {
             <NavLink pathname="/notes" title="Collection" />
             <div className="flex justify-between items-center space-x-6">
               <div className="flex justify-between items-center space-x-4">
-                <div className="h-8 w-8 flex justify-center items-center rounded-md bg-primary-white hover:bg-gray-100 duration-200 border-2 border-primary-border">
-                  <IoNotificationsOutline size={18} />
-                </div>
+                <ActivityMenu />
                 <div className="h-8 w-8 flex justify-center items-center rounded-md bg-primary-white hover:bg-gray-100 duration-200 border-2 border-primary-border">
                   <IoAddOutline size={18} />
                 </div>
               </div>
-              <div className="h-9 w-9 rounded-full bg-primary-border overflow-clip">
-                <Image src={user.photoURL} width={36} height={36} />
-              </div>
+              <AccountMenu photoURL={user.photoURL} />
             </div>
           </div>
         ) : (

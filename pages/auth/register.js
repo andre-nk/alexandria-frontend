@@ -35,9 +35,9 @@ export default function RegisterPage() {
   const router = useRouter();
   const { user } = useAuthContext();
 
-  if (user !== null) {
-    router.push("/");
-  }
+  // if (user !== null) {
+  //   router.push("/");
+  // }
 
   //profile picture methods
   useEffect(() => {
