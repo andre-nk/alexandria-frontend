@@ -94,7 +94,9 @@ export default function Navbar({ isDynamic, setIsOpen }) {
               <IoMenuOutline size={18} />
             </button>
             <Link href="/">
-              <Image src="/logo.png" width={40} height={40} />
+              <a href="">
+                <Image src="/logo.png" width={40} height={40} />
+              </a>
             </Link>
             <div className="h-9 w-9 rounded-full bg-primary-border overflow-clip">
               <Image src={user.photoURL} width={36} height={36} />

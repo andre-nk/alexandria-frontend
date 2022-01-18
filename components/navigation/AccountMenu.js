@@ -1,8 +1,11 @@
 import Image from "next/image";
-import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { Menu, Transition } from "@headlessui/react";
 
-export default function AccountMenu({photoURL}) {
+import { useAuth } from "../../hooks/useAuth";
+
+export default function AccountMenu({ photoURL }) {
+  const { logout } = useAuth();
 
   return (
     <Menu as="div" className="relative inline-block text-left">
@@ -36,9 +39,10 @@ export default function AccountMenu({photoURL}) {
             <Menu.Item>
               {({ active }) => (
                 <button
+                  onClick={logout}
                   className={`${
                     active && "bg-primary-border"
-                  } group flex rounded-md items-center w-full px-3 py-2.5 text-sm duration-200`}
+                  } group text-primary-red flex rounded-md items-center w-full px-3 py-2.5 text-sm duration-200`}
                 >
                   Log out
                 </button>

@@ -7,6 +7,7 @@ import {
   signInWithPopup,
   GithubAuthProvider,
   GoogleAuthProvider,
+  signOut,
 } from "firebase/auth";
 import { uploadBytes, getDownloadURL, ref } from "firebase/storage";
 
@@ -16,7 +17,7 @@ import { useAuthContext } from "./useAuthContext";
 export const useAuth = () => {
   const [error, setError] = useState(null);
   const [profilePictureURL, setProfilePictureURL] = useState(null);
-  const [isResetSent, setisResetSent] = useState(false)
+  const [isResetSent, setisResetSent] = useState(false);
   const { dispatch } = useAuthContext();
 
   const registerUserAPI = async (user) => {
@@ -126,13 +127,13 @@ export const useAuth = () => {
   };
 
   const resetPassword = async (email) => {
-    setError(null)
+    setError(null);
     sendPasswordResetEmail(projectAuth, email)
       .then(() => {
-        setisResetSent(true)
+        setisResetSent(true);
       })
       .catch((error) => {
-        setError(error.message)
+        setError(error.message);
       });
   };
 
@@ -175,11 +176,25 @@ export const useAuth = () => {
       });
   };
 
+  const logout = async () => {
+    setError(null);
+    signOut(projectAuth)
+      .then(() => {
+        dispatch({
+          type: "LOGOUT",
+        });
+      })
+      .catch((error) => {
+        setError(error.message)
+      })
+  };
+
   return {
     error,
     isResetSent,
     registerWithEmail,
     signInWithEmail,
+    logout,
     resetPassword,
     registerWithGithub,
     registerWithGoogle,
