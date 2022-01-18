@@ -11,7 +11,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useAuth } from "../../hooks/useAuth";
 import { useFormatError } from "../../hooks/useFormatError";
 import { useAuthContext } from "../../hooks/useAuthContext";
-import SocialAuthComponent from "../../components/SocialAuth";
+import SocialAuthComponent from "../../components/auth/SocialAuth";
 
 const SignupSchema = Yup.object().shape({
   name: Yup.string()
@@ -35,9 +35,9 @@ export default function RegisterPage() {
   const router = useRouter();
   const { user } = useAuthContext();
 
-  // if (user !== null) {
-  //   router.push("/");
-  // }
+  if (user !== null) {
+    router.push("/");
+  }
 
   //profile picture methods
   useEffect(() => {

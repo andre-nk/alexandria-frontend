@@ -10,7 +10,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useAuth } from "../../hooks/useAuth";
 import { useAuthContext } from "../../hooks/useAuthContext";
 import { useFormatError } from "../../hooks/useFormatError";
-import SocialAuthComponent from "../../components/SocialAuth";
+import SocialAuthComponent from "../../components/auth/SocialAuth";
 
 const SignupSchema = Yup.object().shape({
   email: Yup.string()
