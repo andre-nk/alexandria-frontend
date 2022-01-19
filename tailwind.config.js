@@ -4,6 +4,9 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily: {
+      'mono': ['Inconsolata']
+    },
     extend: {
       colors: {
         "primary-blue": "#1808E8",
