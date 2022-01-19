@@ -10,7 +10,7 @@ export default function Drawer({ isOpen, setIsOpen }) {
     <nav
       className={`fixed z-40 top-0 ${
         isOpen ? "left-0" : "-left-full"
-      } w-full flex duration-300`}
+      } w-full flex duration-300 lg:hidden bg-white`}
     >
       <div className="w-9/12 md:w-7/12 p-8 bg-white transition-shadow shadow-zinc-700 drop-shadow-2xl h-screen">
         <div className="flex w-full justify-center pb-6">

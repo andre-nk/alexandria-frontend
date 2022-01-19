@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -185,8 +185,8 @@ export const useAuth = () => {
         });
       })
       .catch((error) => {
-        setError(error.message)
-      })
+        setError(error.message);
+      });
   };
 
   return {

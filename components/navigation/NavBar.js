@@ -21,7 +21,7 @@ export default function Navbar({ isDynamic, setIsOpen }) {
       src: <Image src="/logo.png" width={32} height={32} />,
       title: (
         <span className="font-light text-md">
-          <strong className="font-medium">Alexandria.</strong>
+          <strong className="font-medium">alexandria.</strong>
         </span>
       ),
     },
@@ -83,9 +83,8 @@ export default function Navbar({ isDynamic, setIsOpen }) {
 
   return (
     <Fragment>
-
       {/* MOBILE */}
-      <nav className="flex lg:hidden justify-between items-center h-[4.5rem] px-5 border-b border-primary-border">
+      <nav className="flex lg:hidden justify-between items-center h-[4.5rem] px-5 border-b bg-white border-primary-border">
         {user != null ? (
           <div className="flex w-full justify-between items-center">
             <button
@@ -103,7 +102,7 @@ export default function Navbar({ isDynamic, setIsOpen }) {
             </div>
           </div>
         ) : (
-          <div className="flex space-x-10 w-full justify-between items-center">
+          <div className="flex space-x-10 z-20 w-full justify-between items-center">
             <Link href="/">
               <Image src="/logo.png" width={40} height={40} />
             </Link>
@@ -120,7 +119,7 @@ export default function Navbar({ isDynamic, setIsOpen }) {
       </nav>
 
       {/* DESKTOP */}
-      <nav className="hidden lg:flex z-30 w-full justify-between items-center lg:bg-white border-b border-primary-border h-[4.5rem] px-8">
+      <nav className="hidden lg:flex z-30 w-full justify-between items-center bg-white border-b border-primary-border h-[4.5rem] px-8">
         <div
           onClick={() => {
             router.push("/app");

@@ -12,12 +12,6 @@ export default function Layout(props) {
   const router = useRouter();
   var isDynamic = false;
 
-  if (router.pathname.indexOf("auth") < 1) {
-    if (authIsReady && !user) {
-        router.push("/")
-    }
-  }
-
   if (router.pathname == "/" || router.pathname == "/app") {
     isDynamic = true;
   }
