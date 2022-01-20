@@ -1,15 +1,11 @@
 import Image from "next/image";
-import { Fragment, useRef } from "react";
+import { Fragment} from "react";
 import { IoSearch } from "react-icons/io5";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
 
-import NoteCard from "../components/home/NoteCard";
+import NotesCarouselWrapper from "../components/home/NoteCarouselWrapper";
+import Footer from "../components/navigation/Footer";
 
 export default function Home() {
-
-  const swiperRef = useRef(null);
-
   return (
     <Fragment>
       <div className="flex flex-col h-[90vh] bg-white relative justify-center align-middle items-center lg:w-full p-8 pt-0">
@@ -34,58 +30,11 @@ export default function Home() {
         </div>
         <Image src="/ornament.svg" layout="fill" className="z-0 object-cover" />
       </div>
-      <div className="flex flex-col pl-10 py-16 w-full bg-[#f7f7f7]">
-        <h2 className="text-3xl font-semibold">Featured Notes</h2>
-        <div className="flex w-full pt-6">
-          <Swiper
-            spaceBetween={32}
-            slidesPerView={3}
-            ref={swiperRef}
-            onSlideChange={() => console.log("slide change")}
-            onSwiper={(swiper) => console.log(swiper)}
-          >
-            <SwiperSlide>
-              <NoteCard
-                title={"Flutter: loop in build() method"}
-                author={"Andreas Notokusumo"}
-                isStarred={true}
-                tags={["flutter", "mobile"]}
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <NoteCard
-                title={"Flutter: loop in build() method"}
-                author={"Andreas Notokusumo"}
-                isStarred={false}
-                tags={["flutter", "mobile"]}
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <NoteCard
-                title={"Flutter: loop in build() method"}
-                author={"Andreas Notokusumo"}
-                isStarred={false}
-                tags={["flutter", "mobile"]}
-              />
-            </SwiperSlide>
-            <SwiperSlide>
-              <NoteCard
-                title={"Flutter: loop in build() method"}
-                author={"Andreas Notokusumo"}
-                isStarred={false}
-                tags={["flutter", "mobile"]}
-              />
-            </SwiperSlide>
-          </Swiper>
-        </div>
-        <button
-          onClick={() => {
-            swiperRef.current.swiper.slideNext();
-          }}
-        >
-          Click
-        </button>
+      <div className="py-16 space-y-20 w-full bg-[rgb(247,247,247)] ">
+        <NotesCarouselWrapper headline={"Recent notes"} link={"/notes"} />
+        <NotesCarouselWrapper headline={"Featured notes"} link={"/notes"} />
       </div>
+      <Footer />
     </Fragment>
   );
 }

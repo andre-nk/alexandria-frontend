@@ -14,7 +14,7 @@ export default function Drawer({ isOpen, setIsOpen }) {
     >
       <div className="w-9/12 md:w-7/12 p-8 bg-white transition-shadow shadow-zinc-700 drop-shadow-2xl h-screen">
         <div className="flex w-full justify-center pb-6">
-          <Image src="/logo-text.svg" width={150} height={50} />
+          <Image src="/logo-text.png" width={150} height={50} />
         </div>
         <DrawerLinks setIsOpen={setIsOpen} title={"Home"} pathname={"/"} />
         <DrawerLinks
