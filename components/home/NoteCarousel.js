@@ -1,13 +1,13 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
-import NoteCard from "./NoteCard"
+import NoteCard from "./NoteCard";
 
 export default function NotesCarousel({
-    swiperRef,
-    swiperActiveIndex,
-    setSwiperActiveIndex,
-    setIsSwiperEnded
+  swiperRef,
+  swiperActiveIndex,
+  setSwiperActiveIndex,
+  setIsSwiperEnded,
 }) {
   return (
     <Swiper
@@ -26,6 +26,7 @@ export default function NotesCarousel({
     >
       <SwiperSlide>
         <NoteCard
+          key="1"
           title={"Flutter: loop in build() method"}
           author={"Andreas Notokusumo"}
           isStarred={true}
@@ -34,6 +35,7 @@ export default function NotesCarousel({
       </SwiperSlide>
       <SwiperSlide>
         <NoteCard
+          key="2"
           title={"Flutter: loop in build() method"}
           author={"Andreas Notokusumo"}
           isStarred={false}
@@ -42,6 +44,7 @@ export default function NotesCarousel({
       </SwiperSlide>
       <SwiperSlide>
         <NoteCard
+          key="3"
           title={"Flutter: loop in build() method"}
           author={"Andreas Notokusumo"}
           isStarred={false}
@@ -50,6 +53,7 @@ export default function NotesCarousel({
       </SwiperSlide>
       <SwiperSlide>
         <NoteCard
+          key="4"
           title={"Flutter: loop in build() method"}
           author={"Andreas Notokusumo"}
           isStarred={false}
@@ -58,6 +62,7 @@ export default function NotesCarousel({
       </SwiperSlide>
       <SwiperSlide>
         <NoteCard
+          key="5"
           title={"Flutter: loop in build() method"}
           author={"Andreas Notokusumo"}
           isStarred={true}
@@ -66,6 +71,7 @@ export default function NotesCarousel({
       </SwiperSlide>
       <SwiperSlide>
         <NoteCard
+          key="6"
           title={"Flutter: loop in build() method"}
           author={"Andreas Notokusumo"}
           isStarred={false}
@@ -74,6 +80,7 @@ export default function NotesCarousel({
       </SwiperSlide>
       <SwiperSlide>
         <NoteCard
+          key="7"
           title={"Flutter: loop in build() method"}
           author={"Andreas Notokusumo"}
           isStarred={false}
@@ -82,6 +89,7 @@ export default function NotesCarousel({
       </SwiperSlide>
       <SwiperSlide>
         <NoteCard
+          key="8"
           title={"Flutter: loop in build() method"}
           author={"Andreas Notokusumo"}
           isStarred={false}

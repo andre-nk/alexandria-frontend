@@ -122,7 +122,11 @@ export default function Navbar({ isDynamic, setIsOpen }) {
       <nav className="hidden lg:flex z-30 w-full justify-between items-center bg-white border-b border-primary-border h-[4.5rem] px-8">
         <div
           onClick={() => {
-            router.push("/app");
+            if(currentAppCount == 0){
+              router.push("/");
+            } else { 
+              router.push("/app");
+            }
           }}
           className="flex space-x-4 items-center bg-white hover:bg-gray-100 py-2 px-3 cursor-pointer rounded-md duration-200"
         >

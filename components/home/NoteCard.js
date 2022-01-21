@@ -2,7 +2,7 @@ import { IoStar, IoStarOutline } from "react-icons/io5";
 
 export default function NoteCard({ title, isStarred, author, tags }) {
   return (
-    <div className="h-[14rem] bg-white shadow-lg hover:shadow-xl mt-2 mb-8 p-6 duration-200 flex flex-col justify-between items-start">
+    <div className="h-[14rem] bg-white hover:shadow-lg mt-2 mb-8 p-6 duration-200 flex flex-col justify-between items-start">
       <div className="w-full flex justify-between items-start">
         <h2 className="text-xl font-medium">{title}</h2>
         {isStarred ? (

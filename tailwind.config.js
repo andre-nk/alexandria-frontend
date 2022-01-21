@@ -5,7 +5,8 @@ module.exports = {
   ],
   theme: {
     fontFamily: {
-      'mono': ['Inconsolata']
+      'mono': ['Inconsolata'],
+      'prose': ['Lato']
     },
     extend: {
       colors: {

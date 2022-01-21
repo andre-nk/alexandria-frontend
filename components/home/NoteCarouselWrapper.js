@@ -4,13 +4,12 @@ import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
 import NotesCarousel from "./NoteCarousel";
 
-export default function NotesCarouselWrapper({
-  headline,
-  link
-}) {
+export default function NotesCarouselWrapper({ headline, link }) {
   const swiperRef = useRef(null);
   const [swiperActiveIndex, setSwiperActiveIndex] = useState(0);
   const [isSwiperEnded, setIsSwiperEnded] = useState(false);
+
+  console.log(swiperActiveIndex);
 
   return (
     <div>
@@ -25,9 +24,10 @@ export default function NotesCarouselWrapper({
       <div className="relative flex flex-col justify-center">
         <div className="w-full absolute flex justify-between px-5">
           <button
+            disabled={swiperActiveIndex <= 0}
             className={`${
-              swiperActiveIndex > 0 && "opacity-100"
-            } opacity-0 duration-100 drop-shadow-md h-10 w-10 z-10 flex justify-center items-center bg-primary-white hover:bg-slate-100 rounded-md border border-minor-text`}
+              swiperActiveIndex > 0 ? "opacity-100" : "opacity-0"
+            } duration-100 drop-shadow-md h-10 w-10 z-10 flex justify-center items-center bg-primary-white hover:bg-slate-100 rounded-md border border-minor-text`}
             onClick={() => {
               swiperRef.current.swiper.slidePrev();
             }}
@@ -35,9 +35,10 @@ export default function NotesCarouselWrapper({
             <IoChevronBack size={18} className="text-major-text" />
           </button>
           <button
+            disabled={isSwiperEnded}
             className={`${
-              !isSwiperEnded && "opacity-100"
-            } opacity-0 duration-100 drop-shadow-md h-10 w-10 z-10 flex justify-center items-center bg-primary-white hover:bg-slate-100 rounded-md border border-minor-text`}
+              !isSwiperEnded ? "opacity-100" : "opacity-0"
+            } duration-100 drop-shadow-md h-10 w-10 z-10 flex justify-center items-center bg-primary-white hover:bg-slate-100 rounded-md border border-minor-text`}
             onClick={() => {
               swiperRef.current.swiper.slideNext();
             }}
