@@ -1,64 +1,13 @@
-import { useRouter } from "next/router";
 import dynamic from "next/dynamic";
-import { useState, useEffect, useRef } from "react";
+import NewNotePage from "../../../components/note/NewNotePage";
 
-export default function NewNotePage() {
-  const router = useRouter();
-  const [noteTitle, setNoteTitle] = useState("");
-  const [CustomEditor, setCustomEditor] = useState(null);
+const DynamicComponentWithNoSSR = dynamic(
+  () => import("../../../components/note/NewNotePage"),
+  { ssr: false }
+);
 
-  useEffect(() => {
-    const { title } = router.query;
-    setNoteTitle(title)
+const isServer = () => typeof window === "undefined";
 
-    if (typeof window !== "undefined" && CustomEditor === null) {
-      let customEditor = dynamic(
-        () => import("../../../components/note/CustomNoteEditor"),
-        { ssr: false }
-      );
-
-      setCustomEditor(customEditor);
-    }
-  }, []);
-
-  return (
-    <div className="py-8 pr-8 pl-10 min-h-screen flex bg-[rgb(247,247,247)]">
-      <div className="w-full">
-        <div className="relative flex w-full justify-center items-center">
-          <input
-            value={noteTitle}
-            onChange={(e) => {
-              setNoteTitle(e.currentTarget.value)
-            }}
-            onKeyDown={(e) => {
-              if(e.key === "Enter"){
-                console.log(noteTitle)
-              }
-            }}
-            className="absolute bg-transparent outline-none text-center text-md capitalize font-medium text-major-text"
-          />
-          <div className="w-full flex justify-between items-center">
-            <button className="px-5 py-[0.4rem] flex justify-center items-center rounded-md bg-primary-white hover:bg-gray-100 duration-200 border-2 border-primary-border">
-              Back
-            </button>
-            <button className="px-5 py-[0.4rem] flex justify-center items-center rounded-md bg-primary-white hover:bg-gray-100 duration-200 border-2 border-primary-border">
-              Show toolbar
-            </button>
-          </div>
-        </div>
-        <div id="editorjs-container" className="hidden">
-          {CustomEditor && <CustomEditor />}
-        </div>
-        <div className="w-full flex justify-center py-10">
-          <div
-            id="editorjs"
-            className="w-full self-center lg:w-7/12 px-8 py-10 h-auto bg-primary-white rounded-sm drop-shadow-xl"
-          ></div>
-        </div>
-      </div>
-      {/* <div className="w-1/4">
-
-      </div> */}
-    </div>
-  );
+export default function NewNoteWrapper() {
+  return <div>{isServer && <DynamicComponentWithNoSSR />}</div>;
 }

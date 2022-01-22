@@ -13,7 +13,9 @@ export default function SearchBar() {
       onSubmit={(values) => {
         if (values.query.indexOf("/c") >= 0) {
           router.push(
-            `notes/new/${values.query.slice(3, values.query.length)}`
+            `notes/new/${values.query.slice(3, values.query.length)}`,
+            undefined,
+            { shallow: true }
           );
         }
       }}
